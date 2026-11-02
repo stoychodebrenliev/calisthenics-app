@@ -1,12 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Calisthenics Skill Coach</Text>
-      <Text style={styles.subtitle}>Choose your skill.</Text>
-      <StatusBar style="auto" />
+      <View style={styles.navbar}>
+        <Pressable>
+          <Text style={styles.navbarTextActive}>Home</Text>
+        </Pressable>
+        <Pressable>
+          <Text style={styles.navbarTextInactive}>Skills</Text>
+        </Pressable>
+        <Pressable>
+          <Text style={styles.navbarTextInactive}>Progress</Text>
+        </Pressable>
+        <Pressable>
+          <Text style={styles.navbarTextInactive}>Profile</Text>
+        </Pressable>
+      </View>
+      <StatusBar style="light" />
     </View>
   );
 }
@@ -14,19 +26,39 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor: '#121212',
+    alignItems: 'flex-start',
+    paddingTop: 70,
+    paddingHorizontal: 20,
+  
+  },
+  navbar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginTop: 30,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+    paddingBottom: 15,
   },
 
-  title: {
-    fontSize: 24,
+  navbarTextInactive: {
+    color: '#fff',
+    fontSize: 15,
     fontWeight: 'bold'
   },
 
-  subtitle: {
-    fontSize: 18,
-    marginTop: 15
-  },
+  navbarTextActive: {
+    color: '#F4D35E',
+    fontSize: 15,
+    fontWeight: 'bold',
+    borderBottomWidth: 2,
+    borderBottomColor: '#F4D35E',
+    paddingBottom: 5,
+  }
+
 });
 
