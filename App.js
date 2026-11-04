@@ -8,6 +8,7 @@ import HomeScreen from './screens/homeScreen';
 import SkillsScreen from './screens/skillsScreen';
 import ProgressScreen from './screens/progressScreen';
 import ProfileScreen from './screens/profileScreen';
+import WelcomeScreen from './screens/welcomeScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,46 +28,57 @@ const appTheme = {
 function MainTabs() {
   return (
     <Tab.Navigator
-          screenOptions={{
-            tabBarIcon: () => <View />,
-            tabBarIconStyle: { display: 'none' },
-            headerShown: false,
-            tabBarPosition: 'top',
-            tabBarShowIcon: () => null,
-            tabBarActiveTintColor: '#E8C76A',
-            tabBarInactiveTintColor: '#F5F5F5',
-            tabBarStyle: {
-              backgroundColor: '#121212',
-              borderBottomWidth: 1,
-              borderBottomColor: '#333333',
-            },
-            tabBarLabelStyle: {
-              fontSize: 14,
-              fontWeight: 'bold',
-              textTransform: 'none',
-              marginTop: 10
-            },
-            sceneStyle: {
-              backgroundColor: '#121212',
-            },
-          }}
-        >
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Skills" component={SkillsScreen} />
-        <Tab.Screen name="Progress" component={ProgressScreen} />
-        <Tab.Screen name="Profile" component={ProfileScreen} />
-      </Tab.Navigator>
+      screenOptions={{
+        tabBarIcon: () => <View />,
+        tabBarIconStyle: { display: 'none' },
+        headerShown: false,
+        tabBarPosition: 'top',
+        tabBarShowIcon: () => null,
+        tabBarActiveTintColor: '#E8C76A',
+        tabBarInactiveTintColor: '#F5F5F5',
+        tabBarStyle: {
+          backgroundColor: '#121212',
+          borderBottomWidth: 1,
+          borderBottomColor: '#333333',
+        },
+        tabBarLabelStyle: {
+          fontSize: 14,
+          fontWeight: 'bold',
+          textTransform: 'none',
+          marginTop: 10
+        },
+        sceneStyle: {
+          backgroundColor: '#121212',
+        },
+      }}
+    >
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Skills" component={SkillsScreen} />
+      <Tab.Screen name="Progress" component={ProgressScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
+    </Tab.Navigator>
   );
-} 
+}
 
 export default function App() {
   return (
     <>
-    <StatusBar style="light" />
-
-    <NavigationContainer theme={appTheme}>
-      <MainTabs />
-    </NavigationContainer>
+      <StatusBar style="light" />
+      <NavigationContainer theme={appTheme}>
+      <Stack.Navigator InitialRouteName="Welcome">
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{ headerShown: false}}
+        />
+        
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{ headerShown: false }} 
+          />
+      </Stack.Navigator>
+      </NavigationContainer>
     </>
   );
 }
