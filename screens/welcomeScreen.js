@@ -1,17 +1,25 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function WelcomeScreen() {
+export default function WelcomeScreen({ navigation }) {
 
 
     return (
         <View style={styles.container}>
             <View style={styles.textContainer}>
+                <View style={styles.iconContainer}>
+                    <Ionicons
+                        name="barbell-outline"
+                        size={36}
+                        color="#E8C76A"
+                    />
+                </View>
                 <Text style={styles.header1}>CALISTHENICS SKILL COACH</Text>
                 <Text style={styles.header2}>Master Your Body</Text>
                 <Text style={styles.bodyText}>Welcome to the Calisthenics Skill Coach app! This app is designed to help you track your progress and improve your calisthenics skills. You can view your profile, track your skills, and monitor your progress over time.</Text>
             </View>
             <View style={styles.buttonsContainer}>
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate('Register')}>
                     <Text style={styles.buttonText}>Create Account</Text>
                 </Pressable>
                 <Pressable>
@@ -30,6 +38,17 @@ const styles = StyleSheet.create({
         padding: 20,
 
     },
+    iconContainer: {
+        alignItems: 'center',
+        marginBottom: 10,
+        height: 66,
+        width: 66,
+        backgroundColor: '#1E1E1E',
+        borderRadius: 33,
+        alignSelf: 'center',
+        justifyContent: 'center',
+    },
+
     textContainer: {
         flex: 1,
         justifyContent: 'center',
