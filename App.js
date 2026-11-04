@@ -1,64 +1,67 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { NavigationContainer, DarkTheme } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { View } from 'react-native';
+
+import HomeScreen from './screens/homeScreen';
+import SkillsScreen from './screens/skillsScreen';
+import ProgressScreen from './screens/progressScreen';
+import ProfileScreen from './screens/profileScreen';
+
+const Tab = createBottomTabNavigator();
+
+const appTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    primary: '#E8C76A',
+    background: '#121212',
+    card: '#121212',
+    text: '#F5F5F5',
+    border: '#333333',
+  },
+};
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <View style={styles.navbar}>
-        <Pressable>
-          <Text style={styles.navbarTextActive}>Home</Text>
-        </Pressable>
-        <Pressable>
-          <Text style={styles.navbarTextInactive}>Skills</Text>
-        </Pressable>
-        <Pressable>
-          <Text style={styles.navbarTextInactive}>Progress</Text>
-        </Pressable>
-        <Pressable>
-          <Text style={styles.navbarTextInactive}>Profile</Text>
-        </Pressable>
-      </View>
-      <StatusBar style="light" />
-    </View>
+    <>
+    <StatusBar style="light" />
+
+    <NavigationContainer theme={appTheme}>
+      <Tab.Navigator
+          screenOptions={{
+            tabBarIcon: () => <View />,
+            tabBarIconStyle: { display: 'none' },
+            headerShown: false,
+            tabBarPosition: 'top',
+            tabBarShowIcon: () => null,
+            tabBarActiveTintColor: '#E8C76A',
+            tabBarInactiveTintColor: '#F5F5F5',
+            tabBarStyle: {
+              backgroundColor: '#121212',
+              borderBottomWidth: 1,
+              borderBottomColor: '#333333',
+            },
+            tabBarLabelStyle: {
+              fontSize: 14,
+              fontWeight: 'bold',
+              textTransform: 'none',
+              marginTop: 10
+            },
+            sceneStyle: {
+              backgroundColor: '#121212',
+            },
+          }}
+        >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Skills" component={SkillsScreen} />
+        <Tab.Screen name="Progress" component={ProgressScreen} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+    </>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    backgroundColor: '#121212',
-    alignItems: 'flex-start',
-    paddingTop: 70,
-    paddingHorizontal: 20,
-  
-  },
-  navbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
-    marginTop: 30,
-    marginBottom: 20,
-    paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333',
-    paddingBottom: 15,
-  },
 
-  navbarTextInactive: {
-    color: '#fff',
-    fontSize: 15,
-    fontWeight: 'bold'
-  },
-
-  navbarTextActive: {
-    color: '#F4D35E',
-    fontSize: 15,
-    fontWeight: 'bold',
-    borderBottomWidth: 2,
-    borderBottomColor: '#F4D35E',
-    paddingBottom: 5,
-  }
-
-});
 
