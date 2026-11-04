@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import HomeScreen from './screens/homeScreen';
 import SkillsScreen from './screens/skillsScreen';
@@ -9,6 +10,7 @@ import ProgressScreen from './screens/progressScreen';
 import ProfileScreen from './screens/profileScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const appTheme = {
   ...DarkTheme,
@@ -22,13 +24,9 @@ const appTheme = {
   },
 };
 
-export default function App() {
+function MainTabs() {
   return (
-    <>
-    <StatusBar style="light" />
-
-    <NavigationContainer theme={appTheme}>
-      <Tab.Navigator
+    <Tab.Navigator
           screenOptions={{
             tabBarIcon: () => <View />,
             tabBarIconStyle: { display: 'none' },
@@ -58,6 +56,16 @@ export default function App() {
         <Tab.Screen name="Progress" component={ProgressScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
       </Tab.Navigator>
+  );
+} 
+
+export default function App() {
+  return (
+    <>
+    <StatusBar style="light" />
+
+    <NavigationContainer theme={appTheme}>
+      <MainTabs />
     </NavigationContainer>
     </>
   );
