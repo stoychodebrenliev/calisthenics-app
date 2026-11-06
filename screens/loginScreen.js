@@ -2,61 +2,79 @@ import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import DissmissKeyboard from '../components/DismissKeyboard';
+import { useState } from 'react';
 
-export default function LoginScreen({navigation}) {
+export default function LoginScreen({ navigation }) {
+
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
     return (
-    <DissmissKeyboard>
-        <SafeAreaView style={styles.container}>
-            <Pressable 
-                    style= {styles.arrowBack} 
+        <DissmissKeyboard>
+            <SafeAreaView style={styles.container}>
+                <Pressable
+                    style={styles.arrowBack}
                     onPress={() => navigation.goBack()}
-                    >
-                        <Ionicons
+                >
+                    <Ionicons
                         name="arrow-back-outline"
                         size={20}
                         color="#E8C76A"
                     />
                     <Text style={styles.backText}>Back</Text>
                 </Pressable>
-            <View style={styles.content}>   
-                <View style={styles.header}>
+                <View style={styles.content}>
+                    <View style={styles.header}>
 
-                <Text style={styles.title}>Log In To Your Account</Text>
-            </View>
-            <View style={styles.inputGroup}>
+                        <Text style={styles.title}>Log In To Your Account</Text>
+                    </View>
+                    <View style={styles.inputGroup}>
 
-                <Text style={styles.label}>Name</Text>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Username"
-                    placeholderTextColor="#AAAA"
-                />
+                        <Text style={styles.label}>Name</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Username"
+                            placeholderTextColor="#AAAA"
+                        />
 
-                <Text style={styles.label}>Password</Text>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Password" 
-                    placeholderTextColor="#AAAA" 
-                    secureTextEntry 
-                />
+                        <Text style={styles.label}>Password</Text>
+                        <View style={styles.passwordContainer}>
 
-            </View>
+                            <TextInput
+                                style={styles.passwordInput}
+                                placeholder="Password"
+                                placeholderTextColor="#AAAA"
+                                secureTextEntry={!showPassword}
+                                value={password}
+                                onChangeText={setPassword}
+                            />
 
-        <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Log in</Text>
-        </Pressable>
+                            <Pressable onPress={() => setShowPassword(!showPassword)}>
+                                <Ionicons
+                                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                                    size={22}
+                                    color="#FFF"
+                                />
+                            </Pressable>
+                        </View>
 
-        <Text style={styles.footerText}> Don't have an account?{'  '}
-            <Text 
-                style={styles.link} 
-                onPress={() => navigation.navigate('Register')}
-            >
-                Register
-            </Text>
-        </Text>
-        </View>
-        </SafeAreaView>
-    </DissmissKeyboard>
+                    </View>
+
+                    <Pressable style={styles.button}>
+                        <Text style={styles.buttonText}>Log in</Text>
+                    </Pressable>
+
+                    <Text style={styles.footerText}> Don't have an account?{'  '}
+                        <Text
+                            style={styles.link}
+                            onPress={() => navigation.navigate('Register')}
+                        >
+                            Register
+                        </Text>
+                    </Text>
+                </View>
+            </SafeAreaView>
+        </DissmissKeyboard>
     );
 }
 
@@ -92,7 +110,7 @@ const styles = StyleSheet.create({
     },
     backText: {
         color: '#E8C76A',
-        fontSize: 16, 
+        fontSize: 16,
     },
 
     inputGroup: {
@@ -138,6 +156,22 @@ const styles = StyleSheet.create({
     link: {
         color: '#E8C76A',
         fontWeight: 'bold',
+    },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#1F1F1F',
+        borderWidth: 1,
+        borderColor: '#383838',
+        borderRadius: 10,
+        height: 50,
+        paddingHorizontal: 15,
+    },
+
+    passwordInput: {
+        flex: 1,
+        color: '#F5F5F5',
+        fontSize: 16,
     },
 
 

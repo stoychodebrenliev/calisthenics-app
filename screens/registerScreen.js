@@ -2,8 +2,16 @@ import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import DissmissKeyboard from '../components/DismissKeyboard';
+import { useState } from 'react';
 
-export default function LoginScreen({ navigation }) {
+export default function RegisterScreen({ navigation }) {
+
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     return (
         <DissmissKeyboard>
             <SafeAreaView style={styles.container}>
@@ -30,6 +38,8 @@ export default function LoginScreen({ navigation }) {
                         style={styles.input}
                         placeholder="Username"
                         placeholderTextColor="#AAAA"
+                        value={username}
+                        onChangeText={setUsername}
                     />
 
                     <Text style={styles.label}>Email</Text>
@@ -37,23 +47,51 @@ export default function LoginScreen({ navigation }) {
                         style={styles.input}
                         placeholder="Email"
                         placeholderTextColor="#AAAA"
+                        value={email}
+                        onChangeText={setEmail}
                     />
-
                     <Text style={styles.label}>Password</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Password"
-                        placeholderTextColor="#AAAA"
-                        secureTextEntry
-                    />
+                    <View style={styles.passwordContainer}>
+
+                        <TextInput
+                            style={styles.passwordInput}
+                            placeholder="Password"
+                            placeholderTextColor="#AAAA"
+                            secureTextEntry={!showPassword}
+                            value={password}
+                            onChangeText={setPassword}
+                        />
+
+                        <Pressable onPress={() => setShowPassword(!showPassword)}>
+                            <Ionicons
+                                name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                                size={22}
+                                color="#FFF"
+                            />
+                        </Pressable>
+                    </View>
 
                     <Text style={styles.label}>Confirm Password</Text>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Confirm Password"
-                        placeholderTextColor="#AAAA"
-                        secureTextEntry
-                    />
+                    <View style={styles.passwordContainer}>
+
+
+                        <TextInput
+                            style={styles.passwordInput}
+                            placeholder="Confirm Password"
+                            placeholderTextColor="#AAAA"
+                            secureTextEntry={!showConfirmPassword}
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                        />
+
+                        <Pressable onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            <Ionicons
+                                name={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'}
+                                size={22}
+                                color="#FFF"
+                            />
+                        </Pressable>
+                    </View>
 
                 </View>
 
@@ -152,6 +190,22 @@ const styles = StyleSheet.create({
     link: {
         color: '#E8C76A',
         fontWeight: 'bold',
+    },
+    passwordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#1F1F1F',
+        borderWidth: 1,
+        borderColor: '#383838',
+        borderRadius: 10,
+        height: 50,
+        paddingHorizontal: 15,
+    },
+
+    passwordInput: {
+        flex: 1,
+        color: '#F5F5F5',
+        fontSize: 16,
     },
 
 
