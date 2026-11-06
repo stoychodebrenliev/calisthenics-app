@@ -10,6 +10,7 @@ import ProgressScreen from './screens/progressScreen';
 import ProfileScreen from './screens/profileScreen';
 import WelcomeScreen from './screens/welcomeScreen';
 import RegisterScreen from './screens/registerScreen';
+import LoginScreen from './screens/loginScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -76,6 +77,12 @@ export default function App() {
         <Stack.Screen
           name="Register"
           component={RegisterScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
           options={{ headerShown: false }}
         />
 

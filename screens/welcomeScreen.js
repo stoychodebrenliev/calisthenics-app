@@ -22,7 +22,7 @@ export default function WelcomeScreen({ navigation }) {
                 <Pressable onPress={() => navigation.navigate('Register')}>
                     <Text style={styles.buttonText}>Create Account</Text>
                 </Pressable>
-                <Pressable>
+                <Pressable onPress={() => navigation.navigate('Login')}>
                     <Text style={styles.buttonText2}>Log In</Text>
                 </Pressable>
             </View>
