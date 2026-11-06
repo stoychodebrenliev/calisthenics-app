@@ -1,74 +1,77 @@
 import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import DissmissKeyboard from '../components/DismissKeyboard';
 
-export default function RegisterScreen({navigation}) {
+export default function LoginScreen({ navigation }) {
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Pressable 
-                    style= {styles.arrowBack} 
-                    onPress={() => navigation.goBack()}
+        <DissmissKeyboard>
+            <SafeAreaView style={styles.container}>
+                <View style={styles.header}>
+                    <Pressable
+                        style={styles.arrowBack}
+                        onPress={() => navigation.goBack()}
                     >
                         <Ionicons
-                        name="arrow-back-outline"
-                        size={20}
-                        color="#E8C76A"
+                            name="arrow-back-outline"
+                            size={20}
+                            color="#E8C76A"
+                        />
+                        <Text style={styles.backText}>Back</Text>
+                    </Pressable>
+
+                    <Text style={styles.title}>Create Account</Text>
+                    <Text style={styles.subtitle}>Start your journey today!</Text>
+                </View>
+                <View style={styles.inputGroup}>
+
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Username"
+                        placeholderTextColor="#AAAA"
                     />
-                    <Text style={styles.backText}>Back</Text>
+
+                    <Text style={styles.label}>Email</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Email"
+                        placeholderTextColor="#AAAA"
+                    />
+
+                    <Text style={styles.label}>Password</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Password"
+                        placeholderTextColor="#AAAA"
+                        secureTextEntry
+                    />
+
+                    <Text style={styles.label}>Confirm Password</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Confirm Password"
+                        placeholderTextColor="#AAAA"
+                        secureTextEntry
+                    />
+
+                </View>
+
+                <Pressable style={styles.button}>
+                    <Text style={styles.buttonText}>Create Account</Text>
                 </Pressable>
 
-                <Text style={styles.title}>Create Account</Text>
-                <Text style={styles.subtitle}>Start your journey today!</Text>
-            </View>
-            <View style={styles.inputGroup}>
+                <Text style={styles.footerText}>If you already have an account?{'  '}
+                    <Text
+                        style={styles.link}
+                        onPress={() => navigation.navigate('Login')}
+                    >
+                        Sign in
+                    </Text>
+                </Text>
 
-                <Text style={styles.label}>Name</Text>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Username"
-                    placeholderTextColor="#AAAA" 
-                />
-
-                <Text style={styles.label}>Email</Text>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Email" 
-                    placeholderTextColor="#AAAA" 
-                />
-
-                <Text style={styles.label}>Password</Text>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Password" 
-                    placeholderTextColor="#AAAA" 
-                    secureTextEntry 
-                />
-
-                <Text style={styles.label}>Confirm Password</Text>
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Confirm Password" 
-                    placeholderTextColor="#AAAA" 
-                    secureTextEntry 
-                />
-
-            </View>
-
-        <Pressable style={styles.button}>
-            <Text style={styles.buttonText}>Create Account</Text>
-        </Pressable>
-
-        <Text style={styles.footerText}>If you already have an account?{'  '}
-            <Text 
-                style={styles.link} 
-                onPress={() => navigation.navigate('Login')}
-            >
-                Sign in
-            </Text>
-        </Text>
-
-        </SafeAreaView>
+            </SafeAreaView>
+        </DissmissKeyboard>
     );
 }
 
@@ -103,7 +106,7 @@ const styles = StyleSheet.create({
     },
     backText: {
         color: '#E8C76A',
-        fontSize: 16, 
+        fontSize: 16,
     },
 
     inputGroup: {
