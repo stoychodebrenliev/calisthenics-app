@@ -51,7 +51,7 @@ export default function LoginScreen({ navigation }) {
 
                             <Pressable onPress={() => setShowPassword(!showPassword)}>
                                 <Ionicons
-                                    name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
                                     size={22}
                                     color="#FFF"
                                 />

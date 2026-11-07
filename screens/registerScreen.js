@@ -3,6 +3,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import DissmissKeyboard from '../components/DismissKeyboard';
 import { useState } from 'react';
+import { supabase } from '../lib/supabase';
+
 
 export default function RegisterScreen({ navigation }) {
 
@@ -13,7 +15,7 @@ export default function RegisterScreen({ navigation }) {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-    function handleRegister() {
+    async function handleRegister() {
         if(!username.trim() || !email.trim() || !password || !confirmPassword) {
             Alert.alert('Error', 'Please fill in all fields.');
             return;
@@ -21,17 +23,37 @@ export default function RegisterScreen({ navigation }) {
 
         if(password.length < 8) {
             Alert.alert('Error', 'Password must be at least 8 characters long.')
+            return;
         }
-        
+
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if(!emailRegex.test(email.trim())) {
             Alert.alert('Error', 'Please enter a valid email adress.')
+            return;
         }
 
         if(password !== confirmPassword) {
             Alert.alert('Error', 'Passwords do not match!')
+            return;
         }
+
+        const { data, error } = await supabase.auth.signUp({
+            email: email.trim(),
+            password: password,
+            options: {
+                data: {
+                    username: username.trim()
+                }
+            }
+            
+        });
+
+        if(error) {
+            Alert.alert('Registration failed', error.message);
+            return;    
+        }
+        navigation.replace('MainTabs')
 
     }
 
@@ -87,7 +109,7 @@ export default function RegisterScreen({ navigation }) {
 
                         <Pressable onPress={() => setShowPassword(!showPassword)}>
                             <Ionicons
-                                name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                                name={showPassword ? 'eye-outline' : 'eye-off-outline'}
                                 size={22}
                                 color="#FFF"
                             />
@@ -109,7 +131,7 @@ export default function RegisterScreen({ navigation }) {
 
                         <Pressable onPress={() => setShowConfirmPassword(!showConfirmPassword)}>
                             <Ionicons
-                                name={showConfirmPassword ? 'eye-off-outline' : 'eye-outline'}
+                                name={showConfirmPassword ? 'eye-outline' : 'eye-off-outline'}
                                 size={22}
                                 color="#FFF"
                             />

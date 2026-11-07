@@ -67,7 +67,7 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <NavigationContainer theme={appTheme}>
-      <Stack.Navigator InitialRouteName="Welcome">
+      <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
