@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import DissmissKeyboard from '../components/DismissKeyboard';
@@ -12,6 +12,29 @@ export default function RegisterScreen({ navigation }) {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    function handleRegister() {
+        if(!username.trim() || !email.trim() || !password || !confirmPassword) {
+            Alert.alert('Error', 'Please fill in all fields.');
+            return;
+        }
+
+        if(password.length < 8) {
+            Alert.alert('Error', 'Password must be at least 8 characters long.')
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!emailRegex.test(email.trim())) {
+            Alert.alert('Error', 'Please enter a valid email adress.')
+        }
+
+        if(password !== confirmPassword) {
+            Alert.alert('Error', 'Passwords do not match!')
+        }
+
+    }
+
     return (
         <DissmissKeyboard>
             <SafeAreaView style={styles.container}>
@@ -95,7 +118,10 @@ export default function RegisterScreen({ navigation }) {
 
                 </View>
 
-                <Pressable style={styles.button}>
+                <Pressable 
+                    style={styles.button}
+                    onPress={handleRegister}
+                >
                     <Text style={styles.buttonText}>Create Account</Text>
                 </Pressable>
 
