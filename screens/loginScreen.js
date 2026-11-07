@@ -1,14 +1,40 @@
-import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import DissmissKeyboard from '../components/DismissKeyboard';
 import { useState } from 'react';
+import { supabase } from '../lib/supabase';
 
 export default function LoginScreen({ navigation }) {
 
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
+    async function handleLogin() {
+
+    if (!email.trim() || !password) {
+        Alert.alert('Error', 'Please fill in all fields.');
+        return;
+    }
+
+    const { error } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password: password
+    });
+
+    if (error) {
+        if (error.code === 'invalid_credentials') {
+            Alert.alert('Login failed', 'Incorrect email or password.');
+        } else {
+            Alert.alert('Login failed', error.message);
+        }
+        return;
+    }
+
+    navigation.replace('MainTabs');
+}
+    
     return (
         <DissmissKeyboard>
             <SafeAreaView style={styles.container}>
@@ -30,11 +56,13 @@ export default function LoginScreen({ navigation }) {
                     </View>
                     <View style={styles.inputGroup}>
 
-                        <Text style={styles.label}>Name</Text>
+                        <Text style={styles.label}>Email</Text>
                         <TextInput
                             style={styles.input}
-                            placeholder="Username"
+                            placeholder="Email"
                             placeholderTextColor="#AAAA"
+                            value={email}
+                            onChangeText={setEmail}
                         />
 
                         <Text style={styles.label}>Password</Text>
@@ -60,7 +88,10 @@ export default function LoginScreen({ navigation }) {
 
                     </View>
 
-                    <Pressable style={styles.button}>
+                    <Pressable 
+                        style={styles.button}
+                        onPress={handleLogin}
+                    >
                         <Text style={styles.buttonText}>Log in</Text>
                     </Pressable>
 
