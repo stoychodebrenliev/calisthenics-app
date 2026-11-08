@@ -32,6 +32,16 @@ const appTheme = {
 function MainTabs() {
 
   const [profileMenuVisible, setProfileMenuVisible] = useState(false);
+
+  async function handleLogout() {
+    const { error } = await supabase.auth.signOut();
+
+    if(error) {
+        Alert.alert('Logout failed', error.message);
+        return;
+    }
+}
+
   return (
     <>
       <Tab.Navigator
@@ -101,9 +111,11 @@ function MainTabs() {
               My Profile
             </Text>
 
+            <Pressable onPress={handleLogout}>
             <Text style={{ color: '#e65643', marginTop: 15 }}>
               Log Out
             </Text>
+            </Pressable>
           </View>
         </View>
       </Modal>
