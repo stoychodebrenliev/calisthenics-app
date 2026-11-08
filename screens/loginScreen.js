@@ -32,7 +32,6 @@ export default function LoginScreen({ navigation }) {
         return;
     }
 
-    navigation.replace('MainTabs');
 }
     
     return (

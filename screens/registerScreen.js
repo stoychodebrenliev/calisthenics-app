@@ -53,7 +53,6 @@ export default function RegisterScreen({ navigation }) {
             Alert.alert('Registration failed', error.message);
             return;    
         }
-        navigation.replace('MainTabs')
 
     }
 

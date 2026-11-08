@@ -3,6 +3,8 @@ import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useState, useEffect } from 'react';
+import { supabase } from './lib/supabase';
 
 import HomeScreen from './screens/homeScreen';
 import SkillsScreen from './screens/skillsScreen';
@@ -63,35 +65,59 @@ function MainTabs() {
 }
 
 export default function App() {
+
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setLoading(false);
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+      }
+    )
+    return () => {
+      subscription.unsubscribe();
+    }
+  }, []);
+
+  if(loading) {
+    return null;
+  }
+
   return (
     <>
       <StatusBar style="light" />
       <NavigationContainer theme={appTheme}>
-      <Stack.Navigator initialRouteName="Welcome">
-        <Stack.Screen
-          name="Welcome"
-          component={WelcomeScreen}
-          options={{ headerShown: false}}
-        />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-        <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{ headerShown: false }}
-        />
+          {session ? (
+            <Stack.Screen
+              name="MainTabs"
+              component={MainTabs}
+            />
+          ) : (
+            <>
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+              />
+              <Stack.Screen
+                name="Register"
+                component={RegisterScreen}
+              />
 
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-
-        <Stack.Screen
-          name="MainTabs"
-          component={MainTabs}
-          options={{ headerShown: false }} 
-          />
-      </Stack.Navigator>
+              <Stack.Screen
+                name="Login"
+                component={LoginScreen}
+              />
+            </>
+          )}
+        </Stack.Navigator>
       </NavigationContainer>
     </>
   );
