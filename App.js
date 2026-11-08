@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View } from 'react-native';
+import { View, Text, Pressable, Modal } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
@@ -30,37 +30,84 @@ const appTheme = {
 };
 
 function MainTabs() {
+
+  const [profileMenuVisible, setProfileMenuVisible] = useState(false);
   return (
-    <Tab.Navigator
-      screenOptions={{
-        tabBarIcon: () => <View />,
-        tabBarIconStyle: { display: 'none' },
-        headerShown: false,
-        tabBarPosition: 'top',
-        tabBarShowIcon: () => null,
-        tabBarActiveTintColor: '#E8C76A',
-        tabBarInactiveTintColor: '#F5F5F5',
-        tabBarStyle: {
-          backgroundColor: '#121212',
-          borderBottomWidth: 1,
-          borderBottomColor: '#333333',
-        },
-        tabBarLabelStyle: {
-          fontSize: 14,
-          fontWeight: 'bold',
-          textTransform: 'none',
-          marginTop: 10
-        },
-        sceneStyle: {
-          backgroundColor: '#121212',
-        },
-      }}
-    >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Skills" component={SkillsScreen} />
-      <Tab.Screen name="Progress" component={ProgressScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-    </Tab.Navigator>
+    <>
+      <Tab.Navigator
+        screenOptions={{
+          tabBarIcon: () => <View />,
+          tabBarIconStyle: { display: 'none' },
+          headerShown: false,
+          tabBarPosition: 'top',
+          tabBarShowIcon: () => null,
+          tabBarActiveTintColor: '#E8C76A',
+          tabBarInactiveTintColor: '#F5F5F5',
+          tabBarStyle: {
+            backgroundColor: '#121212',
+            borderBottomWidth: 1,
+            borderBottomColor: '#333333',
+          },
+          tabBarLabelStyle: {
+            fontSize: 14,
+            fontWeight: 'bold',
+            textTransform: 'none',
+            marginTop: 10
+          },
+          sceneStyle: {
+            backgroundColor: '#121212',
+          },
+        }}
+      >
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Skills" component={SkillsScreen} />
+        <Tab.Screen name="Progress" component={ProgressScreen} />
+        <Tab.Screen
+          name="Profile"
+          component={ProfileScreen}
+          listeners={{
+            tabPress: (e) => {
+              e.preventDefault();
+              setProfileMenuVisible(true);
+            },
+          }}
+        />
+      </Tab.Navigator>
+
+      <Modal
+        transparent={true}
+        visible={profileMenuVisible}
+        animationType='fade'
+        onRequestClose={() => setProfileMenuVisible(false)}
+      >
+        <View style={{ flex: 1 }}>
+          <Pressable
+            style={{ flex: 1 }}
+            onPress={() => setProfileMenuVisible(false)}
+          />
+
+          <View style={{
+            position: 'absolute',
+            top: 110,
+            right: 10,
+            backgroundColor: '#1F1F1F',
+            padding: 15,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColorL: '#383838',
+
+          }}>
+            <Text style={{ color: '#F5F5F5' }}>
+              My Profile
+            </Text>
+
+            <Text style={{ color: '#e65643', marginTop: 15 }}>
+              Log Out
+            </Text>
+          </View>
+        </View>
+      </Modal>
+    </>
   );
 }
 
@@ -85,7 +132,7 @@ export default function App() {
     }
   }, []);
 
-  if(loading) {
+  if (loading) {
     return null;
   }
 
