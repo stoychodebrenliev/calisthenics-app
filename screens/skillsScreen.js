@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Pressable, FlatList, Image } from 'react-native
 import { supabase } from '../lib/supabase';
 import { useEffect, useState } from 'react';
 
-export default function SkillsScreen() {
+export default function SkillsScreen({ navigation }) {
 
     const [skills, setSkills] = useState([]);
 
@@ -35,7 +35,7 @@ export default function SkillsScreen() {
                 renderItem={({ item }) => (
                     <Pressable
                         style={styles.skillCard}
-                        onPress={() => console.log(item.name)}
+                        onPress={() => navigation.navigate('SkillDetails', { skill: item })}
                     >
                         <Image
                             source={{ uri: item.image_url }}

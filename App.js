@@ -13,6 +13,7 @@ import ProfileScreen from './screens/profileScreen';
 import WelcomeScreen from './screens/welcomeScreen';
 import RegisterScreen from './screens/registerScreen';
 import LoginScreen from './screens/loginScreen';
+import SkillDetailsScreen from './screens/skillDetailsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -155,10 +156,16 @@ export default function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
 
           {session ? (
+            <>
             <Stack.Screen
               name="MainTabs"
               component={MainTabs}
             />
+            <Stack.Screen
+              name="SkillDetails"
+              component={SkillDetailsScreen} 
+            />
+            </>
           ) : (
             <>
               <Stack.Screen
