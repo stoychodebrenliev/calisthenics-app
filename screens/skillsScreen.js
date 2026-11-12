@@ -1,14 +1,28 @@
 import { View, Text, StyleSheet, Pressable, FlatList, Image } from 'react-native';
-
-
-const skills = [
-    { id: '1', name: 'Handstand' },
-    { id: '2', name: 'Pull-up' },
-    { id: '3', name: 'L-Sit' },
-    { id: '4', name: 'Muscle-up' }
-];
+import { supabase } from '../lib/supabase';
+import { useEffect, useState } from 'react';
 
 export default function SkillsScreen() {
+
+    const [skills, setSkills] = useState([]);
+
+    useEffect(() => {
+        async function getSkills() {
+            const { data, error } = await supabase
+                .from('skills')
+                .select('*');
+            
+            if(error) {
+                console.log(error.message);
+                return;
+            }
+
+            setSkills(data);
+        }
+
+        getSkills();
+    }, []);
+
     return (
         <View style={styles.container}>
             <Text>Skills Screen</Text>
@@ -23,6 +37,10 @@ export default function SkillsScreen() {
                         style={styles.skillCard}
                         onPress={() => console.log(item.name)}
                     >
+                        <Image
+                            source={{ uri: item.image_url }}
+                            style={styles.skillImage}
+                        />
                         <View style={styles.skillFooter}>
                             <Text style={styles.skillName}>{item.name}</Text>
                         </View>
@@ -54,13 +72,17 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     skillFooter: {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    height: 30,
-    borderTopWidth: 1,
-    borderTopColor: '#383838',
-    justifyContent: 'center',
-    alignItems: 'center',
-},
+        width: '100%',
+        height: 45,
+        borderTopWidth: 1,
+        borderTopColor: '#383838',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    skillImage: {
+        width: '100%',
+        height: '75%',
+        resizeMode: 'cover',
+        objectFit: 'scal'
+    }
 })
