@@ -1,6 +1,9 @@
 import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { supabase } from '../lib/supabse';
+import { useState, useEffect } from 'react';
+
 export default function SkillDetailsScreen({ route, navigation }) {
 
     const { skill } = route.params;
