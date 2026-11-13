@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     },
     skillFooter: {
         width: '100%',
-        height: 45,
+        height: '20%',
         borderTopWidth: 1,
         borderTopColor: '#383838',
         justifyContent: 'center',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     skillImage: {
         width: '100%',
-        height: '75%',
+        height: '80%',
         resizeMode: 'cover',
         objectFit: 'scal'
     }
