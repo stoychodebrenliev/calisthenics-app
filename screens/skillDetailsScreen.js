@@ -7,6 +7,27 @@ import { useState, useEffect } from 'react';
 export default function SkillDetailsScreen({ route, navigation }) {
 
     const { skill } = route.params;
+    const [tips, setTips] = useState([]);
+
+    useEffect(() => {
+        async function fetchTips() {
+            const { data, error } = await supabase
+                .from('skills_tips')
+                .select('*')
+                .eq('skill_id', skill.id)
+                .order('sort_order', { ascending: true });
+
+            if(error) {
+                console.log(error.message);
+                return;
+            }
+
+            setTips(data);
+            console.log('Tips:', data);
+        }
+
+        fetchTips();
+    }, [skill.id]);
 
     return (
         <SafeAreaView style={styles.container}>
