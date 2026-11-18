@@ -14,6 +14,7 @@ import WelcomeScreen from './screens/welcomeScreen';
 import RegisterScreen from './screens/registerScreen';
 import LoginScreen from './screens/loginScreen';
 import SkillDetailsScreen from './screens/skillDetailsScreen';
+import ProgressionDetailsScreen from './screens/progressionDetailsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -37,11 +38,11 @@ function MainTabs() {
   async function handleLogout() {
     const { error } = await supabase.auth.signOut();
 
-    if(error) {
-        Alert.alert('Logout failed', error.message);
-        return;
+    if (error) {
+      Alert.alert('Logout failed', error.message);
+      return;
     }
-}
+  }
 
   return (
     <>
@@ -113,9 +114,9 @@ function MainTabs() {
             </Text>
 
             <Pressable onPress={handleLogout}>
-            <Text style={{ color: '#e65643', marginTop: 15 }}>
-              Log Out
-            </Text>
+              <Text style={{ color: '#e65643', marginTop: 15 }}>
+                Log Out
+              </Text>
             </Pressable>
           </View>
         </View>
@@ -157,14 +158,18 @@ export default function App() {
 
           {session ? (
             <>
-            <Stack.Screen
-              name="MainTabs"
-              component={MainTabs}
-            />
-            <Stack.Screen
-              name="SkillDetails"
-              component={SkillDetailsScreen} 
-            />
+              <Stack.Screen
+                name="MainTabs"
+                component={MainTabs}
+              />
+              <Stack.Screen
+                name="SkillDetails"
+                component={SkillDetailsScreen}
+              />
+              <Stack.Screen
+                name="ProgressionDetails"
+                component={ProgressionDetailsScreen}
+              />
             </>
           ) : (
             <>

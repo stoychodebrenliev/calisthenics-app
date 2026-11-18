@@ -146,7 +146,7 @@ export default function SkillDetailsScreen({ route, navigation }) {
                 </View>
 
                 {progressions.map((progression) => (
-                    <View key={progression.id} style={styles.progressionCard}>
+                    <Pressable key={progression.id} style={styles.progressionCard} onPress={() => navigation.navigate('ProgressionDetails', { progression: progression })}>
                         <View style={styles.progressionNumber}>
                             <Text style={styles.numberText}>
                                 {progression.sort_order}
@@ -162,7 +162,7 @@ export default function SkillDetailsScreen({ route, navigation }) {
                                 {progression.description}
                             </Text>
                         </View>
-                    </View>
+                    </Pressable>
                 ))}
             </ScrollView>
         </SafeAreaView>
