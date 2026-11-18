@@ -8,6 +8,7 @@ export default function SkillDetailsScreen({ route, navigation }) {
 
     const { skill } = route.params;
     const [tips, setTips] = useState([]);
+    const [progressions, setProgressions] = useState([]);
 
     useEffect(() => {
         async function fetchTips() {
@@ -27,6 +28,25 @@ export default function SkillDetailsScreen({ route, navigation }) {
         }
 
         fetchTips();
+    }, [skill.id]);
+
+    useEffect(() => {
+        async function fetchProgressions() {
+            const { data, error } = await supabase
+                .from('progressions')
+                .select('*')
+                .eq('skill_id', skill.id)
+                .order('sort_order', { ascending: true });
+
+            if (error) {
+                console.log(error.message);
+                return;
+            }
+
+            setProgressions(data);
+        }
+
+        fetchProgressions();
     }, [skill.id]);
 
     const techniqueTips = tips.filter((tip) => tip.type === 'technique');
@@ -90,7 +110,7 @@ export default function SkillDetailsScreen({ route, navigation }) {
                             {tip.description}
                         </Text>
                     </View>
-                ))};
+                ))}
 
                 <View style={styles.sectionHeader}>
                     <Ionicons
@@ -112,6 +132,36 @@ export default function SkillDetailsScreen({ route, navigation }) {
                         <Text style={styles.tipDescription}>
                             {tip.description}
                         </Text>
+                    </View>
+                ))}
+                <View style={styles.sectionHeader}>
+                    <Ionicons
+                        name="git-branch-outline"
+                        size={24}
+                        color="#E8C76A"
+                    />
+                    <Text style={styles.sectionTitle}>
+                        Your Progressions
+                    </Text>
+                </View>
+
+                {progressions.map((progression) => (
+                    <View key={progression.id} style={styles.progressionCard}>
+                        <View style={styles.progressionNumber}>
+                            <Text style={styles.numberText}>
+                                {progression.sort_order}
+                            </Text>
+                        </View>
+
+                        <View style={styles.progressionInfo}>
+                            <Text style={styles.tipTitle}>
+                                {progression.title}
+                            </Text>
+
+                            <Text style={styles.tipDescription}>
+                                {progression.description}
+                            </Text>
+                        </View>
                     </View>
                 ))}
             </ScrollView>
@@ -184,7 +234,7 @@ const styles = StyleSheet.create({
     tipCard: {
         backgroundColor: '#1F1F1F',
         borderRadius: 12,
-        padding: 16,
+        padding: 14,
         marginBottom: 10,
     },
     tipTitle: {
@@ -208,5 +258,33 @@ const styles = StyleSheet.create({
         backgroundColor: '#352121',
         borderColor: '#674040',
         borderWidth: 1,
+    },
+    progressionCard: {
+        backgroundColor: '#1F1F1F',
+        borderRadius: 12,
+        padding: 14,
+        marginBottom: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+    },
+
+    progressionNumber: {
+        width: 46,
+        height: 46,
+        backgroundColor: '#363124',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    numberText: {
+        color: '#E8C76A',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+
+    progressionInfo: {
+        flex: 1,
     },
 })
