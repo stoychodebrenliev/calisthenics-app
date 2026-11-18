@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { supabase } from '../lib/supabase';
@@ -17,7 +17,7 @@ export default function SkillDetailsScreen({ route, navigation }) {
                 .eq('skill_id', skill.id)
                 .order('sort_order', { ascending: true });
 
-            if(error) {
+            if (error) {
                 console.log(error.message);
                 return;
             }
@@ -28,6 +28,10 @@ export default function SkillDetailsScreen({ route, navigation }) {
 
         fetchTips();
     }, [skill.id]);
+
+    const techniqueTips = tips.filter((tip) => tip.type === 'technique');
+
+    const mistakes = tips.filter((tip) => tip.type === 'mistake');
 
     return (
         <SafeAreaView style={styles.container}>
@@ -52,29 +56,65 @@ export default function SkillDetailsScreen({ route, navigation }) {
                     style={{ marginLeft: 'auto', backgroundColor: '#252525', padding: 6, borderRadius: 12 }}
                 />
             </View>
-            <View>
+            <ScrollView contentContainerStyle={{ paddingBottom: 30 }}>
                 <Image
                     source={{ uri: skill.image_url }}
                     style={styles.skillImage}
                 />
-            </View>
-            <Text style={styles.skillTitle}>
-                {skill.name}
-            </Text>
-            <View style={styles.descriptionContainer}>
-                <Text style={styles.description}>
-                    {skill.description}
-                </Text>
-            </View>
 
-            <View style={styles.techniqueContainer}>
-                <Ionicons
+                <Text style={styles.skillTitle}>
+                    {skill.name}
+                </Text>
+                <View style={styles.descriptionContainer}>
+                    <Text style={styles.description}>
+                        {skill.description}
+                    </Text>
+                </View>
+
+                <View style={styles.sectionHeader}>
+                    <Ionicons
                         name='bulb-outline'
                         size={24}
                         color='#E8C76A'
                     />
-                <Text style={styles.header2}>Technique Tips</Text>
-            </View>
+                    <Text style={styles.sectionTitle}>Technique Tips</Text>
+                </View>
+
+                {techniqueTips.map((tip) => (
+                    <View key={tip.id} style={[styles.tipCard, styles.techniqueCard]}>
+                        <Text style={styles.tipTitle}>
+                            {tip.title}
+                        </Text>
+
+                        <Text style={styles.tipDescription}>
+                            {tip.description}
+                        </Text>
+                    </View>
+                ))};
+
+                <View style={styles.sectionHeader}>
+                    <Ionicons
+                        name="warning-outline"
+                        size={22}
+                        color="#E8C76A"
+                    />
+                    <Text style={styles.sectionTitle}>
+                        Common Mistakes
+                    </Text>
+                </View>
+
+                {mistakes.map((tip) => (
+                    <View key={tip.id} style={[styles.tipCard, styles.mistakeCard]}>
+                        <Text style={styles.tipTitle}>
+                            {tip.title}
+                        </Text>
+
+                        <Text style={styles.tipDescription}>
+                            {tip.description}
+                        </Text>
+                    </View>
+                ))}
+            </ScrollView>
         </SafeAreaView>
 
 
@@ -129,14 +169,44 @@ const styles = StyleSheet.create({
         borderBottomColor: '#333',
 
     },
-    techniqueContainer: {
+    sectionHeader: {
         flexDirection: 'row',
+        alignItems: 'center',
         gap: 6,
-        paddingTop: 12
+        paddingTop: 12,
+        marginBottom: 14,
     },
-    header2: {
+    sectionTitle: {
         color: '#FFFF',
         fontSize: 20,
         fontWeight: 'bold'
-    }
+    },
+    tipCard: {
+        backgroundColor: '#1F1F1F',
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 10,
+    },
+    tipTitle: {
+        color: '#F5F5F5',
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 6,
+    },
+
+    tipDescription: {
+        color: '#A0A0A0',
+        fontSize: 14,
+        lineHeight: 21,
+    },
+    techniqueCard: {
+        backgroundColor: '#1C3027',
+        borderColor: '#365D47',
+        borderWidth: 1,
+    },
+    mistakeCard: {
+        backgroundColor: '#352121',
+        borderColor: '#674040',
+        borderWidth: 1,
+    },
 })
