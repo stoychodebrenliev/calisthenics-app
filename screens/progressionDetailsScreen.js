@@ -2,8 +2,9 @@ import { View, Text, Image, StyleSheet, Alert, Pressable, ScrollView } from 'rea
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 
-export default function ProgressionDetailsScreen({ route }) {
+export default function ProgressionDetailsScreen({ route, navigation }) {
     const { progression, skill } = route.params;
     const steps = progression.instructions?.split('\n') ?? [];
 
@@ -76,6 +77,22 @@ export default function ProgressionDetailsScreen({ route }) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <View style={styles.header}>
+                <Pressable
+                    style={styles.backButton}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Ionicons
+                        name="arrow-back"
+                        size={24}
+                        color="#F5F5F5"
+                    />
+                </Pressable>
+
+                <Text style={styles.headerTitle}>
+                    Progression Details
+                </Text>
+            </View>
             <ScrollView
                 style={styles.scrollView}
                 contentContainerStyle={styles.scrollContent}
@@ -309,5 +326,26 @@ const styles = StyleSheet.create({
 
     progressCompleted: {
         color: '#8BD3A4',
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 12,
+        marginBottom: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: '#333333',
+        paddingBottom: 14
+    },
+
+    backButton: {
+        backgroundColor: '#252525',
+        padding: 10,
+        borderRadius: 14,
+    },
+
+    headerTitle: {
+        color: '#F5F5F5',
+        fontSize: 18,
+        fontWeight: '600',
     },
 });
