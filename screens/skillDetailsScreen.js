@@ -146,7 +146,7 @@ export default function SkillDetailsScreen({ route, navigation }) {
                 </View>
 
                 {progressions.map((progression) => (
-                    <Pressable key={progression.id} style={styles.progressionCard} onPress={() => navigation.navigate('ProgressionDetails', { progression: progression })}>
+                    <Pressable key={progression.id} style={styles.progressionCard} onPress={() => navigation.navigate('ProgressionDetails', { progression: progression, skill: skill })}>
                         <View style={styles.progressionNumber}>
                             <Text style={styles.numberText}>
                                 {progression.sort_order}

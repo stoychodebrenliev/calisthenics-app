@@ -1,10 +1,10 @@
-import { View, Text, StyleSheet, Alert, Pressable } from 'react-native';
+import { View, Text, Image, StyleSheet, Alert, Pressable } from 'react-native';
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ProgressionDetailsScreen({ route }) {
-    const { progression } = route.params;
+    const { progression, skill } = route.params;
     const [completed, setCompleted] = useState(false);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -78,6 +78,11 @@ export default function ProgressionDetailsScreen({ route }) {
                 {progression.title}
             </Text>
 
+            <Image
+                source={{ uri: skill.image_url }}
+                style={styles.progressionImage}
+            />
+
             <Pressable
                 style={[
                     styles.completeButton,
@@ -134,4 +139,12 @@ const styles = StyleSheet.create({
     completedText: {
         color: '#8BD3A4',
     },
+
+    progressionImage: {
+        width: '100%',
+        height: 260,
+        borderRadius: 12,
+        marginTop: 16,
+        resizeMode: 'cover',
+    }
 });
