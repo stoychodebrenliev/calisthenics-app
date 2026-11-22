@@ -130,6 +130,18 @@ export default function ProgressionDetailsScreen({ route }) {
                         </Text>
                     </View>
                 )}
+                <View style={styles.progressRow}>
+                    <Text style={styles.progressLabel}>
+                        Your Progress
+                    </Text>
+
+                    <Text style={[
+                        styles.progressStatus,
+                        completed && styles.progressCompleted
+                    ]}>
+                        {completed ? '✓ Completed' : '○ Not completed'}
+                    </Text>
+                </View>
             </ScrollView>
             <Pressable
                 style={[
@@ -275,5 +287,27 @@ const styles = StyleSheet.create({
         color: '#F5F5F5',
         fontSize: 14,
         lineHeight: 22,
+    },
+    progressRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 20,
+        paddingHorizontal: 4,
+    },
+
+    progressLabel: {
+        color: '#F5F5F5',
+        fontSize: 16,
+        fontWeight: '600',
+    },
+
+    progressStatus: {
+        color: '#A0A0A0',
+        fontSize: 14,
+    },
+
+    progressCompleted: {
+        color: '#8BD3A4',
     },
 });
