@@ -26,6 +26,7 @@ export default function SkillsScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Explore Skills</Text>
+                <Text style={styles.header2}>Choose a skill and start your journey.</Text>
 
             <FlatList
                 data={skills}
@@ -62,9 +63,14 @@ const styles = StyleSheet.create({
         color: '#F5F5F5',
         fontSize: 18,
         fontWeight: '600',
-        paddingBottom: 16,
+        paddingBottom: 8,
         textAlign: 'center',
-
+    },
+    header2: {
+        color: '#A0A0A0',
+        fontSize: 14,
+        marginBottom: 16,
+        textAlign: 'center'
     },
     skillCard: {
         width: '48%',
