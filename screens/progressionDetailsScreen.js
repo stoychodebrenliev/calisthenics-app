@@ -119,6 +119,17 @@ export default function ProgressionDetailsScreen({ route }) {
                         </View>
                     ))}
                 </View>
+                {progression.goal && (
+                    <View style={styles.goalCard}>
+                        <Text style={styles.goalTitle}>
+                            Your Goal
+                        </Text>
+
+                        <Text style={styles.goalText}>
+                            {progression.goal}
+                        </Text>
+                    </View>
+                )}
             </ScrollView>
             <Pressable
                 style={[
@@ -243,5 +254,26 @@ const styles = StyleSheet.create({
 
     lastStepRow: {
         borderBottomWidth: 0,
-},
+    },
+    goalCard: {
+        backgroundColor: '#242117',
+        borderColor: '#51462B',
+        borderWidth: 1,
+        borderRadius: 12,
+        padding: 16,
+        marginTop: 20,
+    },
+
+    goalTitle: {
+        color: '#E8C76A',
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10,
+    },
+
+    goalText: {
+        color: '#F5F5F5',
+        fontSize: 14,
+        lineHeight: 22,
+    },
 });
