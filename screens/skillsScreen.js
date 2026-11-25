@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, FlatList, Image, RefreshControl } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList, Image, RefreshControl, ActivityIndicator } from 'react-native';
 import { supabase } from '../lib/supabase';
 import { useEffect, useState } from 'react';
 
@@ -6,19 +6,28 @@ export default function SkillsScreen({ navigation }) {
 
     const [skills, setSkills] = useState([]);
     const [refreshing, setRefreshing] = useState(false);
-
+    const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
 
     async function getSkills() {
-        const { data, error } = await supabase
-            .from('skills')
-            .select('*');
 
-        if (error) {
-            console.log(error.message);
-            return;
+        try {
+            const { data, error } = await supabase
+                .from('skills')
+                .select('*');
+
+            if (error) {
+                console.log(error.message);
+                return;
+            }
+
+            setSkills(data ?? []);
+
+        } catch (error) {
+            setErrorMessage(error.message || 'Failed to load skills.');
+        } finally {
+            setLoading(false)
         }
-
-        setSkills(data ?? []);
     }
 
     useEffect(() => {
@@ -39,6 +48,20 @@ export default function SkillsScreen({ navigation }) {
         <View style={styles.container}>
             <Text style={styles.header}>Explore Skills</Text>
             <Text style={styles.header2}>Choose a skill and start your journey.</Text>
+
+            {loading && (
+                <ActivityIndicator
+                    size="large"
+                    color="#E8C76A"
+                    style={styles.loadingIndicator}
+                />
+            )}
+
+            {errorMessage !== '' && (
+                <Text style={styles.errorText}>
+                    Failed to load skills. Please try again.
+                </Text>
+            )}
 
             <FlatList
                 refreshControl={
@@ -120,5 +143,14 @@ const styles = StyleSheet.create({
         height: '80%',
         resizeMode: 'cover',
         objectFit: 'scal'
-    }
+    },
+    loadingIndicator: {
+        marginTop: 30,
+    },
+    errorText: {
+        color: '#FF6B6B',
+        fontSize: 14,
+        textAlign: 'center',
+        marginVertical: 16,
+    },
 })
