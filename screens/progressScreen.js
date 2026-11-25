@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { supabase } from '../lib/supabase';
@@ -6,6 +6,8 @@ import { supabase } from '../lib/supabase';
 export default function ProgressScreen() {
     const [userProgress, setUserProgress] = useState([]);
     const [totalProgressions, setTotalProgressions] = useState(0);
+    const [skills, setSkills] = useState([]);
+
     useFocusEffect(
         useCallback(() => {
             async function fetchUserProgress() {
@@ -40,6 +42,17 @@ export default function ProgressScreen() {
 
                 setTotalProgressions(count ?? 0);
 
+                const { data: skillsData, error: skillsError } = await supabase
+                    .from('skills')
+                    .select('id, name, progressions(id)');
+
+                if (skillsError) {
+                    console.log('Skills error:', skillsError.message);
+                    return;
+                }
+
+                setSkills(skillsData ?? []);
+
             }
 
             fetchUserProgress();
@@ -54,7 +67,7 @@ export default function ProgressScreen() {
     const progressPercentage = totalProgressions > 0 ? Math.round((completedCount / totalProgressions) * 100) : 0;
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.pageTitle}>
                 Your Progress
             </Text>
@@ -81,7 +94,49 @@ export default function ProgressScreen() {
                     />
                 </View>
             </View>
-        </View>
+            <Text style={[styles.cardTitle, { marginTop: 24 }]}>
+                Skill Progress
+            </Text>
+
+            {skills.map((skill) => {
+                const progressions = skill.progressions ?? [];
+
+                const total = progressions.length;
+
+                const completed = progressions.filter((progression) =>
+                    userProgress.some(
+                        (item) =>
+                            item.progression_id === progression.id &&
+                            item.completed === true
+                    )
+                ).length;
+
+                const percentage = total > 0
+                    ? Math.round((completed / total) * 100)
+                    : 0;
+
+                return (
+                    <View key={skill.id} style={styles.skillCard}>
+                        <Text style={styles.cardTitle}>
+                            {skill.name}
+                        </Text>
+
+                        <Text style={styles.completedText}>
+                            {completed} / {total} completed
+                        </Text>
+
+                        <View style={styles.progressBar}>
+                            <View
+                                style={[
+                                    styles.progressFill,
+                                    { width: `${percentage}%` }
+                                ]}
+                            />
+                        </View>
+                    </View>
+                );
+            })}
+        </ScrollView>
     );
 }
 
@@ -123,7 +178,7 @@ const styles = StyleSheet.create({
         color: '#A0A0A0',
         marginTop: 4,
     },
-    
+
     progressBar: {
         height: 10,
         backgroundColor: '#333333',
@@ -136,5 +191,12 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: '#E8C76A',
         borderRadius: 10,
+    },
+
+    skillCard: {
+        backgroundColor: '#1F1F1F',
+        borderRadius: 16,
+        padding: 20,
+        marginTop: 12,
     },
 })
