@@ -11,13 +11,15 @@ export default function SkillsScreen({ navigation }) {
 
     async function getSkills() {
 
+        setErrorMessage('');
+
         try {
             const { data, error } = await supabase
                 .from('skills')
                 .select('*');
 
             if (error) {
-                console.log(error.message);
+                setErrorMessage(error.message)
                 return;
             }
 
@@ -58,40 +60,47 @@ export default function SkillsScreen({ navigation }) {
             )}
 
             {errorMessage !== '' && (
-                <Text style={styles.errorText}>
-                    Failed to load skills. Please try again.
-                </Text>
-            )}
+                <View style={styles.errorContainer}>
+                    <Text style={styles.errorText}>
+                        Failed to load skills. Please try again.
+                    </Text>
 
-            <FlatList
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={handleRefresh}
-                        tintColor="#E8C76A"
-                        colors={['#E8C76A']}
-                        progressBackgroundColor="#1F1F1F"
-                    />
-                }
-                data={skills}
-                numColumns={2}
-                columnWrapperStyle={{ justifyContent: 'space-between' }}
-                keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (
-                    <Pressable
-                        style={styles.skillCard}
-                        onPress={() => navigation.navigate('SkillDetails', { skill: item })}
-                    >
-                        <Image
-                            source={{ uri: item.image_url }}
-                            style={styles.skillImage}
-                        />
-                        <View style={styles.skillFooter}>
-                            <Text style={styles.skillName}>{item.name}</Text>
-                        </View>
+                    <Pressable onPress={getSkills} style={styles.retryButton}>
+                        <Text style={styles.retryText}>Try Again</Text>
                     </Pressable>
-                )}
-            />
+                </View>
+            )}
+            {errorMessage === '' && (
+                <FlatList
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={handleRefresh}
+                            tintColor="#E8C76A"
+                            colors={['#E8C76A']}
+                            progressBackgroundColor="#1F1F1F"
+                        />
+                    }
+                    data={skills}
+                    numColumns={2}
+                    columnWrapperStyle={{ justifyContent: 'space-between' }}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <Pressable
+                            style={styles.skillCard}
+                            onPress={() => navigation.navigate('SkillDetails', { skill: item })}
+                        >
+                            <Image
+                                source={{ uri: item.image_url }}
+                                style={styles.skillImage}
+                            />
+                            <View style={styles.skillFooter}>
+                                <Text style={styles.skillName}>{item.name}</Text>
+                            </View>
+                        </Pressable>
+                    )}
+                />
+            )}
         </View>
     )
 };
@@ -152,5 +161,23 @@ const styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'center',
         marginVertical: 16,
+    },
+    errorContainer: {
+        alignItems: 'center',
+        marginVertical: 16,
+    },
+
+    retryButton: {
+        backgroundColor: '#E8C76A',
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        borderRadius: 10,
+        marginTop: 12,
+    },
+
+    retryText: {
+        color: '#121212',
+        fontWeight: 'bold',
+        fontSize: 14,
     },
 })
