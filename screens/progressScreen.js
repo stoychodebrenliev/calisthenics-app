@@ -64,7 +64,28 @@ export default function ProgressScreen() {
         (item) => item.completed === true
     ).length;
 
-    const progressPercentage = totalProgressions > 0 ? Math.round((completedCount / totalProgressions) * 100) : 0;
+    let totalSkillPercentage = 0;
+
+    skills.forEach((skill) => {
+        const progressions = skill.progressions ?? [];
+
+        const completed = progressions.filter((progression) =>
+            userProgress.some((item) =>
+                item.progression_id === progression.id &&
+                item.completed === true
+            )
+        ).length;
+
+        const percentage = progressions.length > 0
+            ? (completed / progressions.length) * 100
+            : 0;
+
+        totalSkillPercentage += percentage;
+    });
+
+    const progressPercentage = skills.length > 0
+        ? Math.round(totalSkillPercentage / skills.length)
+        : 0;
 
     return (
         <ScrollView style={styles.container}
@@ -85,7 +106,7 @@ export default function ProgressScreen() {
                 </Text>
 
                 <Text style={styles.completedText}>
-                    {completedCount} of {totalProgressions} completed
+                    {completedCount} Completed Progressions
                 </Text>
 
                 <View style={styles.progressBar}>
@@ -131,7 +152,7 @@ export default function ProgressScreen() {
                         </View>
 
                         <Text style={styles.completedText}>
-                            {completed} / {total} completed
+                            {completed} / {total} Completed
                         </Text>
 
                         <View style={styles.progressBar}>
