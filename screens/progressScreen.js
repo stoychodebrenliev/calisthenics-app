@@ -67,7 +67,10 @@ export default function ProgressScreen() {
     const progressPercentage = totalProgressions > 0 ? Math.round((completedCount / totalProgressions) * 100) : 0;
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+        >
             <Text style={styles.pageTitle}>
                 Your Progress
             </Text>
@@ -144,7 +147,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#121212',
+        
+    },
+
+    scrollContent: {
         padding: 20,
+        paddingBottom: 40,
     },
 
     pageTitle: {
