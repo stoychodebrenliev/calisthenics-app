@@ -1,34 +1,55 @@
-import { View, Text, StyleSheet, Pressable, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, Pressable, FlatList, Image, RefreshControl } from 'react-native';
 import { supabase } from '../lib/supabase';
 import { useEffect, useState } from 'react';
 
 export default function SkillsScreen({ navigation }) {
 
     const [skills, setSkills] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
-    useEffect(() => {
-        async function getSkills() {
-            const { data, error } = await supabase
-                .from('skills')
-                .select('*');
-            
-            if(error) {
-                console.log(error.message);
-                return;
-            }
 
-            setSkills(data);
+    async function getSkills() {
+        const { data, error } = await supabase
+            .from('skills')
+            .select('*');
+
+        if (error) {
+            console.log(error.message);
+            return;
         }
 
+        setSkills(data ?? []);
+    }
+
+    useEffect(() => {
         getSkills();
     }, []);
+
+    async function handleRefresh() {
+        setRefreshing(true);
+
+        try {
+            await getSkills();
+        } finally {
+            setRefreshing(false);
+        }
+    }
 
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Explore Skills</Text>
-                <Text style={styles.header2}>Choose a skill and start your journey.</Text>
+            <Text style={styles.header2}>Choose a skill and start your journey.</Text>
 
             <FlatList
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={handleRefresh}
+                        tintColor="#E8C76A"
+                        colors={['#E8C76A']}
+                        progressBackgroundColor="#1F1F1F"
+                    />
+                }
                 data={skills}
                 numColumns={2}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
