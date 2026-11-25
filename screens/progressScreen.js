@@ -120,9 +120,15 @@ export default function ProgressScreen() {
 
                 return (
                     <View key={skill.id} style={styles.skillCard}>
-                        <Text style={styles.cardTitle}>
-                            {skill.name}
-                        </Text>
+                        <View style={styles.skillHeader}>
+                            <Text style={styles.skillName}>
+                                {skill.name}
+                            </Text>
+
+                            <Text style={styles.skillPercentage}>
+                                {percentage}%
+                            </Text>
+                        </View>
 
                         <Text style={styles.completedText}>
                             {completed} / {total} completed
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#121212',
-        
+
     },
 
     scrollContent: {
@@ -206,5 +212,23 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         padding: 20,
         marginTop: 12,
+    },
+
+    skillHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    skillName: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#F5F5F5',
+    },
+
+    skillPercentage: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#E8C76A',
     },
 })
