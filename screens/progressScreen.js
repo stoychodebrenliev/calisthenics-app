@@ -54,28 +54,76 @@ export default function ProgressScreen() {
     const progressPercentage = totalProgressions > 0 ? Math.round((completedCount / totalProgressions) * 100) : 0;
 
     return (
-        <View>
-            <Text>Progress Screen</Text>
-            <Text style={{ color: '#F5F5F5', fontSize: 20 }}>
-                Completed progressions: {completedCount} / {totalProgressions}
-            </Text>
-            <Text style={{ color: '#E8C76A', fontSize: 28 }}>
-                {progressPercentage}%
+        <View style={styles.container}>
+            <Text style={styles.pageTitle}>
+                Your Progress
             </Text>
 
-            <View style={styles.progressBar}>
-                <View
-                    style={[
-                        styles.progressFill,
-                        { width: `${progressPercentage}%` }
-                    ]}
-                />
+            <View style={styles.overallCard}>
+                <Text style={styles.cardTitle}>
+                    Overall Progress
+                </Text>
+
+                <Text style={styles.percentage}>
+                    {progressPercentage}%
+                </Text>
+
+                <Text style={styles.completedText}>
+                    {completedCount} of {totalProgressions} completed
+                </Text>
+
+                <View style={styles.progressBar}>
+                    <View
+                        style={[
+                            styles.progressFill,
+                            { width: `${progressPercentage}%` }
+                        ]}
+                    />
+                </View>
             </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#121212',
+        padding: 20,
+    },
+
+    pageTitle: {
+        fontSize: 28,
+        fontWeight: 'bold',
+        color: '#F5F5F5',
+        marginBottom: 24,
+    },
+
+    overallCard: {
+        backgroundColor: '#1F1F1F',
+        borderRadius: 16,
+        padding: 20,
+    },
+
+    cardTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: '#F5F5F5',
+        marginBottom: 16,
+    },
+
+    percentage: {
+        fontSize: 36,
+        fontWeight: 'bold',
+        color: '#E8C76A',
+    },
+
+    completedText: {
+        fontSize: 14,
+        color: '#A0A0A0',
+        marginTop: 4,
+    },
+    
     progressBar: {
         height: 10,
         backgroundColor: '#333333',
