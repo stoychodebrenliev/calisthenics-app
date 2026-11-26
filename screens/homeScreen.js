@@ -6,19 +6,33 @@ export default function HomeScreen({ navigation }) {
 
     const [userName, setUserName] = useState('')
     const [showWelcome, setShowWelcome] = useState(true);
+    const [workouts, setWorkouts] = useState([]);
+
     async function getUser() {
         const { data, error } = await supabase.auth.getUser();
 
-        if(error) {
+        if (error) {
             Alert.alert('Error', error.message);
             return;
         }
 
         setUserName(data.user?.user_metadata?.username ?? '');
 
+        const { data: workoutData, error: workoutError } = await supabase
+            .from('training_logs')
+            .select('*')
+            .eq('user_id', data.user.id)
+            .order('workout_date', { ascending: false });
+
+        if (workoutError) {
+            console.log('Workout error:', workoutError.message);
+            return;
+        }
+
+        setWorkouts(workoutData ?? []);
     }
 
-    useEffect (() => {
+    useEffect(() => {
         getUser();
     }, []);
 
@@ -33,12 +47,16 @@ export default function HomeScreen({ navigation }) {
     return (
         <View>
             <Text style={styles.welcomeText}>
-                {showWelcome 
-                ? `Welcome back, ${userName}!` 
-                : 'Your Training Dashboard'}
+                {showWelcome
+                    ? `Welcome back, ${userName}!`
+                    : 'Your Training Dashboard'}
             </Text>
             <Text style={styles.secondWelcome}>
                 Ready to master your next skill?
+            </Text>
+
+            <Text style={styles.workoutCount}>
+                Saved workouts: {workouts.length}
             </Text>
         </View>
     );
@@ -46,7 +64,7 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
     welcomeText: {
-        fontSize:24,
+        fontSize: 24,
         fontWeight: 'bold',
         color: '#F5F5F5',
         paddingLeft: 16,
@@ -58,5 +76,11 @@ const styles = StyleSheet.create({
         color: '#ccc',
         paddingLeft: 16,
 
-    }
+    },
+    workoutCount: {
+        color: '#E8C76A',
+        fontSize: 18,
+        marginTop: 24,
+        marginLeft: 16,
+    },
 })
