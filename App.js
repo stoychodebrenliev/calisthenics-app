@@ -15,7 +15,7 @@ import RegisterScreen from './screens/registerScreen';
 import LoginScreen from './screens/loginScreen';
 import SkillDetailsScreen from './screens/skillDetailsScreen';
 import ProgressionDetailsScreen from './screens/progressionDetailsScreen';
-import AddWorkoutScreen from './screens/AddWorkoutScreen';
+import AddWorkoutScreen from './screens/addWorkoutScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
