@@ -55,6 +55,15 @@ export default function HomeScreen({ navigation }) {
                 Ready to master your next skill?
             </Text>
 
+            <Pressable
+                style={styles.addWorkoutButton}
+                onPress={() => navigation.navigate('AddWorkout')}
+            >
+                <Text style={styles.addWorkoutText}>
+                    + Add Workout
+                </Text>
+            </Pressable>
+
             <Text style={styles.workoutCount}>
                 Saved workouts: {workouts.length}
             </Text>
@@ -83,4 +92,19 @@ const styles = StyleSheet.create({
         marginTop: 24,
         marginLeft: 16,
     },
+
+    addWorkoutButton: {
+        backgroundColor: '#E8C76A',
+        marginHorizontal: 16,
+        marginTop: 24,
+        padding: 16,
+        borderRadius: 12,
+        alignItems: 'center',
+    },
+
+    addWorkoutText: {
+        color: '#121212',
+        fontWeight: 'bold',
+        fontSize: 16
+    }
 })
