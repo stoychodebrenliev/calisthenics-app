@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { View, Text, Pressable, Modal } from 'react-native';
+import { View, Text, Pressable, Modal, Alert } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useState, useEffect } from 'react';
 import { supabase } from './lib/supabase';
@@ -15,6 +15,7 @@ import RegisterScreen from './screens/registerScreen';
 import LoginScreen from './screens/loginScreen';
 import SkillDetailsScreen from './screens/skillDetailsScreen';
 import ProgressionDetailsScreen from './screens/progressionDetailsScreen';
+import AddWorkoutScreen from './screens/AddWorkoutScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -169,6 +170,10 @@ export default function App() {
               <Stack.Screen
                 name="ProgressionDetails"
                 component={ProgressionDetailsScreen}
+              />
+              <Stack.Screen
+                name="AddWorkout"
+                component={AddWorkoutScreen}
               />
             </>
           ) : (
